@@ -24,15 +24,23 @@ class VidplayExtractor:
 
     @staticmethod
     def get_vidplay_subtitles(url_data: str) -> Dict:
+        scraper = cloudscraper.create_scraper()
         subtitles_url = re.search(r"info=([^&]+)", url_data)
         if not subtitles_url:
             return {}
 
         subtitles_url_formatted = unquote(subtitles_url.group(1))
-        req = requests.get(subtitles_url_formatted)
+        # req = requests.get(subtitles_url_formatted)
+        req = scraper.get(subtitles_url_formatted)
 
+        # if req.status_code == 200:
+        #     return {subtitle.get("label"): subtitle.get("file") for subtitle in req.json()}
         if req.status_code == 200:
-            return {subtitle.get("label"): subtitle.get("file") for subtitle in req.json()}
+            json_output = [
+                {"label": subtitle.get("label"), "file": subtitle.get("file")}
+                for subtitle in req.json()
+            ]
+            return json_output
 
         return {}
 
@@ -98,7 +106,7 @@ class VidplayExtractor:
                 json_object = {
                     "quality": quality,
                     "url": url,
-                    "is_m3u8": url in ".m3u8"
+                    "is_m3u8": ".m3u8" in url
                 }
 
                 # Append the dictionary to the JSON array

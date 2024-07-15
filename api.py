@@ -24,7 +24,8 @@ def get_date():
     )
     m3u8_links, subtitles = vse.get_streams(media_type,tmdb_id,season,episode)
     # print(result)
-    return jsonify({"m3u8_links": m3u8_links, "subtitles": []})
+
+    return jsonify({"m3u8_links": m3u8_links, "subtitles": subtitles})
 
 if __name__ == '__main__':
     app.run()
