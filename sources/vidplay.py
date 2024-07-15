@@ -42,7 +42,7 @@ class VidplayExtractor:
             ]
             return json_output
 
-        return {}
+        return []
 
     @staticmethod
     def encode_id(v_id: str) -> str:
