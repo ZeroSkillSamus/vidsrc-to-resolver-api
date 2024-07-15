@@ -5,7 +5,7 @@ import requests
 import cloudscraper
 from urllib.parse import unquote
 from typing import Optional, Tuple, Dict, List
-from utils import Utilities, CouldntFetchKeys
+from utils import Utilities, CouldntFetchKeys, VidSrcError
 
 class VidplayExtractor:
     KEY_URL = "https://github.com/Ciarands/vidsrc-keys/blob/main/keys.json"
@@ -68,21 +68,44 @@ class VidplayExtractor:
 
         key = self.encode_id(url_data[0].split("/e/")[-1])
         futoken = self.get_futoken(key, url, provider_url)
-        print(f"key {key}")
-        print(f"futoken {futoken}")
-        print(f"REFEREURL {url}")
-        print(f"{provider_url}/mediainfo/{futoken}?{url_data[1]}&autostart=true")
         scraper = cloudscraper.create_scraper()
        # req = requests.get(f"{provider_url}/mediainfo/{futoken}?{url_data[1]}&autostart=true", headers={"Referer": url})
         req = scraper.get(f"{provider_url}/mediainfo/{futoken}?{url_data[1]}&autostart=true", headers={"Referer": url})
-        print(req.json())
+        print(subtitles)
         if req.status_code != 200:
             print(f"[VidplayExtractor] Failed to retrieve media, status code: {req.status_code}...")
-            return None, None, None
+            return None, None
 
         req_data = req.json()
         if (req_data.get("result")) and (type(req_data.get("result")) == dict):
             sources = req_data.get("result").get("sources")
-            return [value.get("file") for value in sources], subtitles, url
+            json_array = []
 
-        return None, None, None
+            # Need to request the m3u8 file to get other qualities
+            sources = [value.get("file") for value in sources]
+            req = requests.get(sources[0])
+            if req.status_code != 200:
+                error_msg = f"Couldnt fetch {req.url}, status code: {req.status_code}..."
+                raise VidSrcError(error_msg)
+
+            pattern = re.compile(r"(RESOLUTION=)(.*)(\s*?)(\s*.*)")
+            index_to_start = sources[0].index("list;")
+            for match in pattern.finditer(req.text):
+                quality = match.group(2).split("x")[-1]
+                url = sources[0][:index_to_start] + match.group(4).strip()
+
+                # Create a dictionary for the current match
+                json_object = {
+                    "quality": quality,
+                    "url": url,
+                    "is_m3u8": url in ".m3u8"
+                }
+
+                # Append the dictionary to the JSON array
+                json_array.append(json_object)
+
+            #json_output = json.dumps(json_array)
+
+            return json_array, subtitles
+
+        return None, None

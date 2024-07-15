@@ -1,8 +1,15 @@
 from flask import Flask, jsonify, request
 from vidsrc import VidSrcExtractor
 import subprocess
+import re
+import json
 app = Flask(__name__)
-
+#  pub url: String,
+#     pub quality: String,
+#     pub is_m3u8: bool,
+#
+#  pub file: String,
+#     pub label: Option<String>,
 @app.route('/VIDSRC-TO/Watch', methods=['GET'])
 def get_date():
     # Fetch Query Strings
@@ -15,9 +22,9 @@ def get_date():
         source_name = "F2Cloud",
         fetch_subtitles = True,
     )
-    result = vse.get_streams(media_type,tmdb_id,season,episode)
-    print(result)
-    return jsonify({'date': result})
+    m3u8_links, subtitles = vse.get_streams(media_type,tmdb_id,season,episode)
+    # print(result)
+    return jsonify({"m3u8_links": m3u8_links, "subtitles": []})
 
 if __name__ == '__main__':
     app.run()
