@@ -27,7 +27,7 @@ class VidplayExtractor:
         scraper = cloudscraper.create_scraper()
         subtitles_url = re.search(r"info=([^&]+)", url_data)
         if not subtitles_url:
-            return {}
+            return []
 
         subtitles_url_formatted = unquote(subtitles_url.group(1))
         # req = requests.get(subtitles_url_formatted)
@@ -70,7 +70,7 @@ class VidplayExtractor:
     def resolve_source(self, url: str, fetch_subtitles: bool, provider_url: str) -> Tuple[Optional[List], Optional[Dict], Optional[str]]:
         url_data = url.split("?")
 
-        subtitles = {}
+        subtitles = []
         if fetch_subtitles:
             subtitles = self.get_vidplay_subtitles(url_data[1])
 
