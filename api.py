@@ -1,8 +1,5 @@
 from flask import Flask, jsonify, request
 from vidsrc import VidSrcExtractor
-import subprocess
-import re
-import json
 app = Flask(__name__)
 #  pub url: String,
 #     pub quality: String,
@@ -23,8 +20,6 @@ def get_date():
         fetch_subtitles = True,
     )
     m3u8_links, subtitles = vse.get_streams(media_type,tmdb_id,season,episode)
-    # print(result)
-
     return jsonify({"m3u8_links": m3u8_links, "subtitles": subtitles})
 
 if __name__ == '__main__':

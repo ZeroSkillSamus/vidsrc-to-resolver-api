@@ -57,8 +57,8 @@ class VidplayExtractor:
 
         key1, key2 = json.loads(matches.group(1).replace("\\", ""))
         # print(f"key1 {key1}     key2 {key2}")
-        key1 = "QwDHNW5PBtuyt4AP"
-        key2 = "aYV0lMSHexNXxwsr"
+        key1 = "K6ZgOAbRiXzpnOlU"
+        key2 = "inR6X3fx7YK45U7L"
         decoded_id = Utilities.decode_data(key1, v_id)
         encoded_result = Utilities.decode_data(key2, decoded_id)
 
@@ -75,11 +75,12 @@ class VidplayExtractor:
             subtitles = self.get_vidplay_subtitles(url_data[1])
 
         key = self.encode_id(url_data[0].split("/e/")[-1])
-        futoken = self.get_futoken(key, url, provider_url)
+        #futoken = self.get_futoken(key, url, provider_url)
+        futoken = "CLNNJe3fZ2rRtdr9"
         scraper = cloudscraper.create_scraper()
        # req = requests.get(f"{provider_url}/mediainfo/{futoken}?{url_data[1]}&autostart=true", headers={"Referer": url})
         req = scraper.get(f"{provider_url}/mediainfo/{futoken}?{url_data[1]}&autostart=true", headers={"Referer": url})
-        print(subtitles)
+        print(f"{provider_url}/mediainfo/{futoken}?{url_data[1]}&autostart=true")
         if req.status_code != 200:
             print(f"[VidplayExtractor] Failed to retrieve media, status code: {req.status_code}...")
             return None, None
