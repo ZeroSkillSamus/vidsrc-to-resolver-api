@@ -460,7 +460,7 @@ class WatchSeriesExtractor:
                     "name":episode.find('a').find('span').text.strip(),
                     "id": episode.find('a')['data-id'],
                     "url":episode.find('a')['href'],
-                    "episode_num":episode.find('a').find('p').text.strip()
+                    "episode_num":episode.find('a').find('p').text.strip().replace("Episode ","")
                 })
             season_episodes[season_num] = episode_array
 

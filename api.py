@@ -22,7 +22,7 @@ app = Flask(__name__)
 @app.route('/VIDSRC-TO/Watch', methods=['GET'])
 def get_f2cloud_watchseries():
     # Fetch Query Strings
-    media_id = request.args.get('media_id')
+    media_id = request.args.get('id')
     season = request.args.get('season')
     episode = request.args.get('episode')
 
