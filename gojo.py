@@ -23,7 +23,6 @@ class GojoExtractor:
         url = self.createStreamURL(is_dub, provider, ani_id, episode_num, episode_id)
         req = self.scraper.get(url, headers={"Referer": self.REFERER, "User-Agent": self.USER_AGENT})
         response = json.loads(req.text)
-        # x = {"sources":[{"quality":"1080p","url":"https://pahe.gojo.wtf/https://vault-14.kwikie.ru/stream/14/03/c373dc9d39a455a818c0c166a2a922f8121835d37342912d57ed06be4585e0f0/uwu.m3u8"},{"quality":"720p","url":"https://pahe.gojo.wtf/https://vault-14.kwikie.ru/stream/14/03/2a82dfd54affb78cce269e61367afaeb8249de05921c89b9d0773e1940e3d4b0/uwu.m3u8"},{"quality":"360p","url":"https://pahe.gojo.wtf/https://vault-14.kwikie.ru/stream/14/03/cba1e2850cba2a9d3fa98327ce239a563e0207c6739aa17c5c14ddc447fc88af/uwu.m3u8"}],"skips":{"op":{"startTime":103.375,"endTime":192.917},"ed":{"startTime":1325.633,"endTime":1419.375},"number":1}}
         headers = { 
             "referer": self.REFERER,
             "origin": self.ORIGIN
@@ -56,15 +55,7 @@ class GojoExtractor:
             "subType": lang_state,
             "watchId": episode_id
         }
-    #     }
-    #     pub url: String,
-    # pub quality: String,
-    # pub is_m3u8: bool,
-    #     pub headers: Headers,
-    # pub sources: Vec<M3u8>,
-    # pub intro: Option<AnimeSongRanges>,
-    # pub outro: Option<AnimeSongRanges>,
-    # pub tracks: Option<Vec<Subtitle>>,
+
         # Parse the URL and add query parameters
         url_parts = list(urlparse(url))
         query = dict(parse_qs(url_parts[4]))
