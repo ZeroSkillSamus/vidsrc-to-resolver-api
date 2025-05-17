@@ -21,30 +21,39 @@ class GojoExtractor:
     
     def fetch_streams(self,is_dub, provider, ani_id, episode_num, episode_id):
         url = self.createStreamURL(is_dub, provider, ani_id, episode_num, episode_id)
+        print(url)
         req = self.scraper.get(url, headers={"Referer": self.REFERER, "User-Agent": self.USER_AGENT})
         response = json.loads(req.text)
+        # print(response)
         headers = { 
             "referer": self.REFERER,
             "origin": self.ORIGIN
         }
-        response = {
+        if response["skips"] == None:
+            return {
+                "headers": headers,
+                "sources": response.get("sources", []),
+                "tracks": []
+            }
+        # print(response["skips"] == "None")
+        return {
             "headers": headers,
-            "sources": response["sources"],
+            "sources": response.get("sources",[]),
             "intro": {
-                "start": response["skips"]["op"]["startTime"],
-                "end": response["skips"]["op"]["endTime"]
+                "start": response.get("skips",{})["op"]["startTime"],
+                "end": response.get("skips",{})["op"]["endTime"]
             },
             "outro": {
-                "start": response["skips"]["ed"]["startTime"],
-                "end": response["skips"]["ed"]["endTime"]
+                "start": response.get("skips",{}).get("ed",{}).get("startTime"),
+                "end": response.get("skips",{}).get("ed",{}).get("endTime")
             },
             "tracks": []
         }
-        return response
 
     def createStreamURL(self,is_dub: bool, provider, ani_id, episode_num, episode_id):
         url = f"{self.BACKEND_BASE_URL}/tiddies"
         lang_state = "dub" if is_dub else "sub"
+        print(lang_state)
         # Create query parameters dictionary
         params = {
             "provider": provider,

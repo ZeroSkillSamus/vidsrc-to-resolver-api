@@ -25,8 +25,9 @@ def getStreams():
     aniID = request.args.get('ani_id')
     episodeNum = request.args.get("episode_num")
     episodeID = request.args.get("episode_id")
-    isDub = request.args.get("is_dub").lower()in ("true", "1", "yes", "dub")
-    dubID = request.args.get("dub_id")
+    isDub = request.args.get("is_dub").lower() in ("true", "1", "yes", "dub")
+    # vdubID = request.args.get("dub_id")
+    print(provider)
     if not aniID:
         return jsonify({"error": "aniID parameter are required"}), 400
     
