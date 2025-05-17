@@ -14,9 +14,7 @@ def getEpisodes():
     
     try:
         parser = GojoExtractor()   
-        x = parser.fetch_episodes(malID, aniID)
-        print(x)
-        return x
+        return jsonify(parser.fetch_episodes(malID, aniID))
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
