@@ -13,8 +13,10 @@ def getEpisodes():
         return jsonify({"error": "Both malID and aniID parameters are required"}), 400
     
     try:
-        parser = GojoExtractor()
-        return parser.fetch_episodes(malID, aniID)
+        parser = GojoExtractor()   
+        x = parser.fetch_episodes(malID, aniID)
+        print(x)
+        return x
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
