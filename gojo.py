@@ -27,7 +27,6 @@ class GojoExtractor:
             "referer": self.REFERER,
             "origin": self.ORIGIN
         }
-
         response = {
             "headers": headers,
             "sources": response["sources"],
@@ -43,10 +42,9 @@ class GojoExtractor:
         }
         return response
 
-    def createStreamURL(self,is_dub, provider, ani_id, episode_num, episode_id):
+    def createStreamURL(self,is_dub: bool, provider, ani_id, episode_num, episode_id):
         url = f"{self.BACKEND_BASE_URL}/tiddies"
         lang_state = "dub" if is_dub else "sub"
-
         # Create query parameters dictionary
         params = {
             "provider": provider,

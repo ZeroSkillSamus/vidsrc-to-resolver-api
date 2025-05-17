@@ -25,15 +25,14 @@ def getStreams():
     aniID = request.args.get('ani_id')
     episodeNum = request.args.get("episode_num")
     episodeID = request.args.get("episode_id")
-    isDub = request.args.get("is_dub")
+    isDub = request.args.get("is_dub").lower()in ("true", "1", "yes", "dub")
     dubID = request.args.get("dub_id")
-
     if not aniID:
         return jsonify({"error": "aniID parameter are required"}), 400
     
     try:
         parser = GojoExtractor()
-        return parser.fetch_streams(isDub, provider, aniID, episodeNum, episodeID)
+        return jsonify(parser.fetch_streams(isDub, provider, aniID, episodeNum, episodeID))
     except Exception as e:
         return jsonify({"error": str(e)}), 500
     
