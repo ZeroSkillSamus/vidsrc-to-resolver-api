@@ -7,11 +7,11 @@ import cloudscraper
 from urllib.parse import urlparse, parse_qs, urlencode, urlunparse
 
 class GojoExtractor: 
-    BASE_URL = "https://gojo.wtf"
-    REFERER = "https://gojo.wtf/"
-    ORIGIN = "https://gojo.wtf"
+    BASE_URL = "https://animetsu.cc"
+    REFERER = "https://animetsu.cc/"
+    ORIGIN = "https://animetsu.cc"
     USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:123.0) Gecko/20100101 Firefox/123.0";
-    BACKEND_BASE_URL = "https://backend.gojo.wtf/api/anime"
+    BACKEND_BASE_URL = "https://backend.animetsu.cc/api/anime"
     scraper = cloudscraper.create_scraper()
 
     def fetch_episodes(self,mal_id,ani_id):
